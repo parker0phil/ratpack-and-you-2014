@@ -10,16 +10,7 @@ ratpack {
 
     handler {
       println "2"
-      insert chain {
-        handler {
-          println "3"
-          next()
-        }
-        handler {
-          println "4"
-        }
-      }
-      next()
+      insert chain(registry.get(ThreeFourChain))
     }
 
     handler {
