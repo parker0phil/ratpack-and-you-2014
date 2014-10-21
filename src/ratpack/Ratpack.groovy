@@ -3,15 +3,8 @@ import static ratpack.groovy.Groovy.ratpack
 ratpack {
   handlers {
 
-    handler {
-      println "1"
-      next()
-    }
-
-    handler {
-      println "2"
-      insert chain(registry.get(ThreeFourChain))
-    }
+    handler registry.get(LoggingHandler)
+    handler registry.get(CookieSettingHandler)
 
     handler {
       println "Sending Response"
