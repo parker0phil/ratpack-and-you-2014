@@ -5,7 +5,7 @@ ratpack {
 
     handler {
       println "1"
-      next()
+//      next()
     }
 
     handler {
