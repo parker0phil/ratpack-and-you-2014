@@ -1,6 +1,8 @@
 package handlers
 
 import domain.User
+import groovy.transform.CompileStatic
+import ratpack.exec.ExecControl
 import ratpack.handling.Context
 import ratpack.handling.Handler
 import services.UserService
@@ -9,10 +11,12 @@ import javax.inject.Inject
 
 class UserLoadingHandler implements Handler {
 
+  final ExecControl execControl
   final UserService service
 
   @Inject
-  UserLoadingHandler(UserService service) {
+  UserLoadingHandler(UserService service, ExecControl execControl) {
+    this.execControl = execControl
     this.service = service
   }
 
@@ -20,9 +24,12 @@ class UserLoadingHandler implements Handler {
   void handle(Context context) throws Exception {
     context.with {
       def email = response.cookies.find { it.name == 'email' } ?: request.cookies.find { it.name == 'email' }
-      User user = service.findByEmail(email?.value)
-      request.add(User, user)
-      next()
+      execControl.blocking {
+        service.findByEmail(email?.value)
+      } then { User user ->
+        request.add(User, user)
+        next()
+      }
     }
   }
 }
