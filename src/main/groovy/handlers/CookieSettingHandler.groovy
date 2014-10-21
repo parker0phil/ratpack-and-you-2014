@@ -1,7 +1,10 @@
+package handlers
+
 import ratpack.handling.Context
 import ratpack.handling.Handler
 
 class CookieSettingHandler implements Handler {
+
   @Override
   void handle(Context context) throws Exception {
     context.with {
