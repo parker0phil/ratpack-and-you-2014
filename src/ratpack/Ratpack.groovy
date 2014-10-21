@@ -5,11 +5,20 @@ ratpack {
 
     handler {
       println "1"
-//      next()
+      next()
     }
 
     handler {
       println "2"
+      insert chain {
+        handler {
+          println "3"
+          next()
+        }
+        handler {
+          println "4"
+        }
+      }
       next()
     }
 
